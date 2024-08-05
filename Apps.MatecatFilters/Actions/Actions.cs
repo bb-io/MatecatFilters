@@ -25,17 +25,17 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         var stream = await FileManagementClient.DownloadAsync(input.File);
         var bytes = await stream.GetByteData();
 
-        var request = new FiltersRequest("/AutomationService/original2xliff", Method.Post, Creds).WithFormData(new
+        var request = new FiltersRequest("/api/v2/original2xliff", Method.Post, Creds).WithFormData(new
         {
             sourceLocale = input.SourceLocale,
             targetLocale = input.TargetLocale,
-        }, isMultipartFormData: true).WithFile(bytes, input.File.Name, "documentContent");
+        }, isMultipartFormData: true).WithFile(bytes, input.File.Name, "document");
 
         var response = await Client.ExecuteWithErrorHandling<XliffDto>(request);
 
         if (!response.IsSuccess) throw new Exception(response.ErrorMessage);
 
-        var file = await FileManagementClient.UploadAsync(StringToStream(response.XliffContent), "application/x-xliff+xml", response.Filename);
+        var file = await FileManagementClient.UploadAsync(StringToStream(response.Xliff), "application/x-xliff+xml", response.Filename);
 
         return new XliffFileModel
         {
@@ -49,7 +49,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         var stream = await FileManagementClient.DownloadAsync(input.XliffFile);
         var bytes = await stream.GetByteData();
 
-        var request = new FiltersRequest("/AutomationService/xliff2original", Method.Post, Creds).WithFile(bytes, input.XliffFile.Name, "xliffContent");
+        var request = new FiltersRequest("/api/v2/xliff2original", Method.Post, Creds).WithFile(bytes, input.XliffFile.Name, "xliff");
 
         var response = await Client.ExecuteWithErrorHandling<DocumentDto>(request);
 
