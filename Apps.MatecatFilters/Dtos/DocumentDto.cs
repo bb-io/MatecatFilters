@@ -9,6 +9,6 @@ namespace Apps.MatecatFilters.Dtos
     public class DocumentDto : BaseDto
     {
         public string Filename { get; set; }
-        public string DocumentContent { get; set; }
+        public string Document { get; set; }
     }
 }

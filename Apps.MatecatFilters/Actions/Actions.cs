@@ -9,8 +9,6 @@ using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using RestSharp;
-using System.IO;
-using System.Net.Mime;
 using System.Text;
 
 namespace Apps.MatecatFilters.Actions;
@@ -29,7 +27,15 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         {
             sourceLocale = input.SourceLocale,
             targetLocale = input.TargetLocale,
-        }, isMultipartFormData: true).WithFile(bytes, "text.txt"/*input.File.Name*/, "document");
+        }, isMultipartFormData: true).WithFile(bytes, input.File.Name, "document");
+        
+        if(input.Segmentation != null)
+            request.AddParameter("segmentation", input.Segmentation);
+
+        if (input.DoNotTranslateKeys != null)
+        {
+            request.AddParameter("extractionParams", $"{{\"do_not_translate_keys\": [{string.Join(',', input.DoNotTranslateKeys.Select(x => $"\"{x}\"").ToList())}]}}");
+        }
 
         var response = await Client.ExecuteWithErrorHandling<XliffDto>(request);
 
@@ -43,7 +49,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         };
     }
 
-    [Action("Convert XLIFF to original", Description = "Convert a translated XLIFF to a translated file")]
+    [Action("Convert XLIFF to source file", Description = "Convert XLIFF to source file")]
     public async Task<FileResponse> ConvertToOriginal([ActionParameter] XliffFileModel input)
     {
         var stream = await FileManagementClient.DownloadAsync(input.XliffFile);
@@ -57,7 +63,32 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
         string mimeType = MimeTypes.GetMimeType(response.Filename);
 
-        var base64EncodedBytes = Convert.FromBase64String(response.DocumentContent);
+        var base64EncodedBytes = Convert.FromBase64String(response.Document);
+        var decoded = Encoding.UTF8.GetString(base64EncodedBytes);
+
+        var file = await FileManagementClient.UploadAsync(new MemoryStream(base64EncodedBytes), mimeType, response.Filename);
+
+        return new FileResponse
+        {
+            File = file
+        };
+    }
+
+    [Action("Convert XLIFF to target file", Description = "Convert a translated XLIFF to a translated file")]
+    public async Task<FileResponse> ConvertToTranslated([ActionParameter] XliffFileModel input)
+    {
+        var stream = await FileManagementClient.DownloadAsync(input.XliffFile);
+        var bytes = await stream.GetByteData();
+
+        var request = new FiltersRequest("/api/v2/xliff2translated", Method.Post, Creds).WithFile(bytes, input.XliffFile.Name, "xliff");
+
+        var response = await Client.ExecuteWithErrorHandling<DocumentDto>(request);
+
+        if (!response.Successful) throw new Exception(response.ErrorMessage);
+
+        string mimeType = MimeTypes.GetMimeType(response.Filename);
+
+        var base64EncodedBytes = Convert.FromBase64String(response.Document);
         var decoded = Encoding.UTF8.GetString(base64EncodedBytes);
 
         var file = await FileManagementClient.UploadAsync(new MemoryStream(base64EncodedBytes), mimeType, response.Filename);
