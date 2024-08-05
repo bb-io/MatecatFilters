@@ -29,11 +29,11 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         {
             sourceLocale = input.SourceLocale,
             targetLocale = input.TargetLocale,
-        }, isMultipartFormData: true).WithFile(bytes, input.File.Name, "document");
+        }, isMultipartFormData: true).WithFile(bytes, "text.txt"/*input.File.Name*/, "document");
 
         var response = await Client.ExecuteWithErrorHandling<XliffDto>(request);
 
-        if (!response.IsSuccess) throw new Exception(response.ErrorMessage);
+        if (!response.Successful) throw new Exception(response.ErrorMessage);
 
         var file = await FileManagementClient.UploadAsync(StringToStream(response.Xliff), "application/x-xliff+xml", response.Filename);
 
@@ -53,7 +53,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
         var response = await Client.ExecuteWithErrorHandling<DocumentDto>(request);
 
-        if (!response.IsSuccess) throw new Exception(response.ErrorMessage);
+        if (!response.Successful) throw new Exception(response.ErrorMessage);
 
         string mimeType = MimeTypes.GetMimeType(response.Filename);
 
