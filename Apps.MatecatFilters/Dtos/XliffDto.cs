@@ -9,6 +9,6 @@ namespace Apps.MatecatFilters.Dtos
     public class XliffDto : BaseDto
     {
         public string Filename { get; set; }
-        public string XliffContent { get; set; }
+        public string Xliff { get; set; }
     }
 }
