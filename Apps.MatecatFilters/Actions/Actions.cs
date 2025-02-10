@@ -4,6 +4,7 @@ using Apps.MatecatFilters.Invocables;
 using Apps.MatecatFilters.Models;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
@@ -39,7 +40,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
         var response = await Client.ExecuteWithErrorHandling<XliffDto>(request);
 
-        if (!response.Successful) throw new Exception(response.ErrorMessage);
+        if (!response.Successful) throw new PluginApplicationException(response.ErrorMessage);
 
         var file = await FileManagementClient.UploadAsync(StringToStream(response.Xliff), "application/x-xliff+xml", response.Filename);
 
@@ -59,7 +60,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
         var response = await Client.ExecuteWithErrorHandling<DocumentDto>(request);
 
-        if (!response.Successful) throw new Exception(response.ErrorMessage);
+        if (!response.Successful) throw new PluginApplicationException(response.ErrorMessage);
 
         string mimeType = MimeTypes.GetMimeType(response.Filename);
 
@@ -84,7 +85,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
         var response = await Client.ExecuteWithErrorHandling<DocumentDto>(request);
 
-        if (!response.Successful) throw new Exception(response.ErrorMessage);
+        if (!response.Successful) throw new PluginApplicationException(response.ErrorMessage);
 
         string mimeType = MimeTypes.GetMimeType(response.Filename);
 
