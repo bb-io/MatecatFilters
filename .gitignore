@@ -366,3 +366,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ConsoleApp1
+/Tests.MatecatFilters/appsettings.json

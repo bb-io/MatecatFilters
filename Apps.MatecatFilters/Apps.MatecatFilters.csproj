@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Matecat Filters</Product>
         <Description>Easily extract all the translatable contents from any file format into a convenient XLIFF file. Translate it and use Filters again to get back a completely translated file with perfectly preserved formatting.</Description>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <AssemblyName>Apps.MatecatFilters</AssemblyName>
     </PropertyGroup>
 
@@ -21,8 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.8.0" />
-        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.25" />
+        <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.11.1" />
+        <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.26" />
         <PackageReference Include="MimeTypes" Version="2.5.2">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

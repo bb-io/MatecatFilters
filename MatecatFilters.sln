@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apps.MatecatFilters", "Apps.MatecatFilters\Apps.MatecatFilters.csproj", "{EB25604E-8EBA-464E-BEDF-30EA95395AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{07040BA3-523F-4F27-84B1-4B416CB0C419}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.MatecatFilters", "Tests.MatecatFilters\Tests.MatecatFilters.csproj", "{6C1FF90C-6CC8-4AB2-AE90-C799480ECF0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EB25604E-8EBA-464E-BEDF-30EA95395AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB25604E-8EBA-464E-BEDF-30EA95395AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB25604E-8EBA-464E-BEDF-30EA95395AD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07040BA3-523F-4F27-84B1-4B416CB0C419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07040BA3-523F-4F27-84B1-4B416CB0C419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07040BA3-523F-4F27-84B1-4B416CB0C419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07040BA3-523F-4F27-84B1-4B416CB0C419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C1FF90C-6CC8-4AB2-AE90-C799480ECF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C1FF90C-6CC8-4AB2-AE90-C799480ECF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C1FF90C-6CC8-4AB2-AE90-C799480ECF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C1FF90C-6CC8-4AB2-AE90-C799480ECF0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
