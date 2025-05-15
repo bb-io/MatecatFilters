@@ -24,7 +24,7 @@ Before you can connect you need to make sure that:
 
 ## Actions
 
-- **Convert to XLIFF** Take any file format supported by Matecat Filters and convert it to an XLIFF.
+- **Convert to XLIFF** Take any file format [supported by Matecat Filters](https://filters.matecat.com/formats.html) and convert it to an XLIFF.
   - For JSON files you can specify optional input parameter "Do not translate keys" which allows you to ignore specific JSON keys for translation
 - **Convert XLIFF to source file** Convert a translated XLIFF back to its original file format.
 - **Convert XLIFF to target file** Convert a translated XLIFF to a translated file.
