@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Apps.MatecatFilters.Actions;
 
-[ActionList]
+[ActionList("XLIFF conversions")]
 public class Actions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
     : FiltersInvocable(invocationContext, fileManagementClient)
 {
