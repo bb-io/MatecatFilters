@@ -21,28 +21,55 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
     [Action("Convert to XLIFF", Description = "Extract translatable text as an XLIFF file")]
     public async Task<XliffFileModel> ConvertToXliff([ActionParameter] XliffRequest input)
     {
-        var stream = await FileManagementClient.DownloadAsync(input.File);
-        var bytes = await stream.GetByteData();
+        invocationContext.Logger?.LogInformation("Starting XLIFF conversion", null);
 
+        invocationContext.Logger?.LogInformation($"Downloading file: {input.File?.Name}", null);
+        var stream = await FileManagementClient.DownloadAsync(input.File);
+
+        invocationContext.Logger?.LogInformation("Reading file bytes", null);
+        var bytes = await stream.GetByteData();
+        invocationContext.Logger?.LogInformation($"File downloaded, size: {bytes?.Length ?? 0} bytes", null);
+
+        invocationContext.Logger?.LogInformation("Building request for /api/v2/original2xliff", null);
         var request = new FiltersRequest("/api/v2/original2xliff", Method.Post, Creds).WithFormData(new
         {
             sourceLocale = input.SourceLocale,
             targetLocale = input.TargetLocale,
         }, isMultipartFormData: true).WithFile(bytes, input.File.Name, "document");
-        
-        if(input.Segmentation != null)
+
+        if (input.Segmentation != null)
+        {
+            invocationContext.Logger?.LogInformation($"Adding segmentation: {input.Segmentation}", null);
             request.AddParameter("segmentation", input.Segmentation);
+        }
 
         if (input.DoNotTranslateKeys != null)
         {
-            request.AddParameter("extractionParams", $"{{\"do_not_translate_keys\": [{string.Join(',', input.DoNotTranslateKeys.Select(x => $"\"{x}\"").ToList())}]}}");
+            invocationContext.Logger?.LogInformation($"Adding extraction params, keys count: {input.DoNotTranslateKeys.Count}", null);
+            request.AddParameter("extractionParams",
+                $"{{\"do_not_translate_keys\": [{string.Join(',', input.DoNotTranslateKeys.Select(x => $"\"{x}\"").ToList())}]}}");
         }
 
+        invocationContext.Logger?.LogInformation("Sending request to Filters API", null);
         var response = await Client.ExecuteWithErrorHandling<XliffDto>(request);
 
-        if (!response.Successful) throw new PluginApplicationException(response.ErrorMessage);
+        invocationContext.Logger?.LogInformation(
+            $"Received response. Successful: {response.Successful}, Filename: {response.Filename}, XLIFF length: {response.Xliff?.Length ?? 0}",
+            null);
 
-        var file = await FileManagementClient.UploadAsync(StringToStream(response.Xliff), "application/x-xliff+xml", response.Filename);
+        if (!response.Successful)
+        {
+            invocationContext.Logger?.LogWarning($"XLIFF conversion failed: {response.ErrorMessage}", null);
+            throw new PluginApplicationException(response.ErrorMessage);
+        }
+
+        invocationContext.Logger?.LogInformation($"Uploading XLIFF file: {response.Filename}", null);
+        var file = await FileManagementClient.UploadAsync(
+            StringToStream(response.Xliff),
+            "application/x-xliff+xml",
+            response.Filename);
+
+        invocationContext.Logger?.LogInformation($"XLIFF uploaded successfully: {file?.Name}", null);
 
         return new XliffFileModel
         {

@@ -2,12 +2,6 @@
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Utils.RestSharp;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Apps.MatecatFilters.Api
 {
@@ -15,7 +9,7 @@ namespace Apps.MatecatFilters.Api
     {
         public FiltersRequest(string endpoint, Method method, IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProviders) : base(endpoint, method, authenticationCredentialsProviders)
         {
-            
+
         }
 
         protected override void AddAuth(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProviders)
