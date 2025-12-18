@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Matecat Filters</Product>
         <Description>Easily extract all the translatable contents from any file format into a convenient XLIFF file. Translate it and use Filters again to get back a completely translated file with perfectly preserved formatting.</Description>
-        <Version>1.1.2</Version>
+        <Version>1.1.3</Version>
         <AssemblyName>Apps.MatecatFilters</AssemblyName>
     </PropertyGroup>
 
